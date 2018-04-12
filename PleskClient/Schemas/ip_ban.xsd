@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:include schemaLocation="plesk_common.xsd"/>
+
+    <xs:complexType name="IpBanInput">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="get-settings">
+                <xs:annotation>
+                    <xs:documentation>Get list of IP ban settings</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="set-settings">
+                <xs:annotation>
+                    <xs:documentation>Set IP ban settings</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ban-period" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="ban-time-window" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="max-retries" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="IpBanOutput">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="get-settings">
+                <xs:annotation>
+                    <xs:documentation>Get list of IP ban settings</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="resultType">
+                                        <xs:sequence minOccurs="0">
+                                            <xs:element name="settings" maxOccurs="unbounded">
+                                                <xs:complexType>
+                                                    <xs:sequence>
+                                                        <xs:element name="ban-period" type="int"/>
+                                                        <xs:element name="ban-time-window" type="int"/>
+                                                        <xs:element name="max-retries" type="int"/>
+                                                    </xs:sequence>
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="set-settings">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>

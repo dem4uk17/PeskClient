@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="common.xsd"/>
+	<xs:complexType name="UserInput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="UserAddInput"/>
+			<xs:element name="get" type="UserGetInput"/>
+			<xs:element name="set" type="UserSetInput"/>
+			<xs:element name="del" type="UserDelInput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="UserOutput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="UserAddOutput"/>
+			<xs:element name="get" type="UserGetOutput"/>
+			<xs:element name="set" type="UsetSetOutput"/>
+			<xs:element name="del" type="UserDelOutput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="UserAddInput">
+		<xs:sequence>
+			<xs:element name="gen-info" type="UserAddGenInfo"/>
+			<xs:element name="roles" type="UserAddRoles"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserAddGenInfo">
+		<xs:sequence>
+			<xs:element name="login" type="string"/>
+			<xs:element name="passwd" type="string"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-guid" type="string"/>
+				<xs:element name="owner-external-id" type="string"/>
+			</xs:choice>
+			<xs:element name="name" type="string"/>
+			<xs:element name="contact-info" type="ContactInfoAdd" minOccurs="0"/>
+			<xs:element name="status" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="0"/>
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="enabled"/>
+						<xs:enumeration value="disabled"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+            <xs:element name="subscription-domain-id" type="int" minOccurs="0"/>
+			<xs:element name="email" type="emailType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserAddRoles">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserGetInput">
+		<xs:sequence>
+			<xs:element name="filter" type="UserSelectionFilter"/>
+			<xs:element name="dataset" type="UserDatasetInput"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserSetInput">
+		<xs:sequence>
+			<xs:element name="filter" type="UserSelectionFilter"/>
+			<xs:element name="values" type="UserSetValuesInput"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserDelInput">
+		<xs:sequence>
+			<xs:element name="filter" type="UserSelectionFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContactInfoAdd">
+		<xs:sequence>
+			<xs:element name="company" type="string" minOccurs="0"/>
+			<xs:element name="phone" type="string" minOccurs="0"/>
+			<xs:element name="fax" type="string" minOccurs="0"/>
+			<xs:element name="address" type="string" minOccurs="0"/>
+			<xs:element name="city" type="string" minOccurs="0"/>
+			<xs:element name="state" type="string" minOccurs="0"/>
+			<xs:element name="zip" type="string" minOccurs="0"/>
+			<xs:element name="country" type="string" minOccurs="0"/>
+            <xs:element name="im" type="string" minOccurs="0"/>
+            <xs:element name="imtype" type="string" minOccurs="0"/>
+            <xs:element name="comment" type="string" minOccurs="0"/>
+            <xs:element name="locale" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserDatasetInput">
+		<xs:sequence>
+			<xs:element name="gen-info" minOccurs="0"/>
+			<xs:element name="roles" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserSelectionFilter">
+		<xs:choice>
+			<xs:element name="guid" type="string" maxOccurs="unbounded"/>
+			<xs:element name="owner-guid" type="string" maxOccurs="unbounded"/>
+			<xs:element name="external-id" type="string" maxOccurs="unbounded"/>
+			<xs:element name="owner-external-id" type="string" maxOccurs="unbounded"/>
+			<xs:element name="all" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="UserAddOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type">
+									<xs:annotation>
+										<xs:documentation>New user ID on success</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="guid" type="string">
+									<xs:annotation>
+										<xs:documentation>New user GUID on success</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserDelOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UsetSetOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserSetValuesInput">
+		<xs:sequence>
+			<xs:element name="gen-info" type="UserSetGenInfo" minOccurs="0"/>
+			<xs:element name="roles" type="UserAddRoles" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserSetGenInfo">
+		<xs:sequence>
+			<xs:element name="passwd" type="string" minOccurs="0"/>
+			<xs:element name="name" type="string" minOccurs="0"/>
+			<xs:element name="contact-info" type="ContactInfoAdd" minOccurs="0"/>
+			<xs:element name="status" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="0"/>
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="enabled"/>
+						<xs:enumeration value="disabled"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+			<xs:element name="login" type="string" minOccurs="0"/>
+            <xs:element name="subscription-domain-id" type="int" minOccurs="0"/>
+			<xs:element name="email" type="emailType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserGetOutput">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="data" type="UserGetOutputData"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserGetOutputData">
+		<xs:sequence>
+			<xs:element name="gen-info" type="UserGetGenInfo" minOccurs="0"/>
+			<xs:element name="roles" type="UserAddRoles" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserGetGenInfo">
+		<xs:sequence>
+			<xs:element name="login" type="string"/>
+			<xs:element name="name" type="string"/>
+			<xs:element name="owner-guid" type="string"/>
+			<xs:element name="status">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="enabled"/>
+						<xs:enumeration value="disabled"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="guid" type="string"/>
+			<xs:element name="is-built-in" type="boolean"/>
+			<xs:element name="contact-info" type="ContactInfoAdd" minOccurs="0"/>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+            <xs:element name="subscription-domain-id" type="int" minOccurs="0"/>
+			<xs:element name="email" type="emailType"/>
+            <xs:element name="mailname-id" type="int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

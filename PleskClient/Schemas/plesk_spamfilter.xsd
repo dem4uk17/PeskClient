@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="PolicySettings">
+		<xs:sequence>
+			<xs:element name="use-server-wide-settings" type="boolean">
+				<xs:annotation>
+					<xs:documentation>Server wide settings</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="personal" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Managing of personal settings Required for server settings of spam filter</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServerSettings">
+		<xs:sequence>
+			<xs:element name="hits" type="int">
+				<xs:annotation>
+					<xs:documentation>Hits required for spam</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Modify spam mail subject</xs:documentation>
+				</xs:annotation>
+				<xs:element name="modify" type="boolean"/>
+				<xs:element name="subject" type="string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PatternList">
+		<xs:sequence>
+			<xs:element name="pattern" type="emailType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilter">
+		<xs:sequence>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="policy_settings" type="PolicySettings" minOccurs="0"/>
+					<xs:element name="server_settings" type="ServerSettings" minOccurs="0"/>
+				</xs:sequence>
+				<xs:sequence minOccurs="0">
+					<xs:element name="mailname" type="emailType"/>
+					<xs:element name="personal_settings" type="PersonalSettings" minOccurs="0"/>
+				</xs:sequence>
+			</xs:choice>
+			<xs:element name="whitelist" type="PatternList" minOccurs="0"/>
+			<xs:element name="blacklist" type="PatternList" minOccurs="0"/>
+			<xs:element name="ignorelist" type="PatternList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ArgListOp">
+		<xs:sequence>
+			<xs:element name="filter" type="PatternList"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="mailname" type="string" minOccurs="0"/>
+					<xs:choice>
+						<xs:element name="whitelist"/>
+						<xs:element name="blacklist"/>
+					</xs:choice>
+				</xs:sequence>
+				<xs:element name="ignorelist">
+					<xs:annotation>
+						<xs:documentation>only for server</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MailnameSpamFilter">
+		<xs:sequence>
+			<xs:element name="mailname" type="emailType"/>
+			<xs:element name="personal_settings"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonalSettings">
+		<xs:complexContent>
+			<xs:extension base="ServerSettings">
+				<xs:sequence>
+					<xs:element name="use-server-wide-settings" type="boolean"/>
+					<xs:element name="spam-action" type="SpamActionType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="SpamActionType">
+		<xs:restriction base="string">
+			<xs:enumeration value="delete"/>
+			<xs:enumeration value="save"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

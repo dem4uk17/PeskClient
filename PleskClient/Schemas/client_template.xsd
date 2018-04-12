@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_client.xsd"/>
+	<xs:complexType name="ClientTemplateInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="ClienttemplateAddInputType"/>
+			<xs:element name="get" type="ClientTemplateGetInputType"/>
+			<xs:element name="del" type="ClientTemplateDelInputType"/>
+			<xs:element name="set" type="ClientTemplateSetInputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ClienttemplateAddInputType">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="limits" type="clientTemplateLimits" minOccurs="0"/>
+			<xs:element name="permissions" type="clientPerms" minOccurs="0"/>
+			<xs:element name="ip-pool" type="ClienttemplateIpPoolType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateGetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="ClientTemplateFilterType"/>
+			<xs:element name="limits" type="NoneType" minOccurs="0"/>
+			<xs:element name="permissions" type="NoneType" minOccurs="0"/>
+			<xs:element name="ip-pool" type="NoneType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateDelInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="ClientTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateSetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="ClientTemplateFilterType"/>
+			<xs:element name="limits" type="clientTemplateLimits" minOccurs="0"/>
+			<xs:element name="permissions" type="clientPerms" minOccurs="0"/>
+			<xs:element name="ip-pool" type="ClienttemplateIpPoolType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateFilterType">
+		<xs:choice minOccurs="0">
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="name" type="string" maxOccurs="unbounded"/>
+			<xs:element name="guid" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ClienttemplateIpPoolType">
+		<xs:sequence>
+			<xs:element name="ip-address" type="ip_address" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="allocate-ip" type="int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="ClientTemplateOutputAddType"/>
+			<xs:element name="get" type="ClienttemplateOutputGetType"/>
+			<xs:element name="del" type="ClientTemplateOutputDelType"/>
+			<xs:element name="set" type="ClientTemplateOutputSetType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateOutputAddType">
+		<xs:sequence>
+			<xs:element name="result" type="ClientTemplateOutputResulttype"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateOutputResulttype">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence>
+					<xs:element name="id" type="id_type" minOccurs="0"/>
+					<xs:element name="name" type="string" minOccurs="0"/>
+					<xs:element name="guid" type="string" minOccurs="0"/>
+					<xs:element name="problems" type="string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ClienttemplateOutputGetType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ClientTemplateOutputResulttype">
+							<xs:sequence>
+								<xs:element name="limits" type="clientTemplateLimits" minOccurs="0"/>
+								<xs:element name="permissions" type="clientPerms" minOccurs="0"/>
+								<xs:element name="ip-pool" type="ClienttemplateIpPoolType" minOccurs="0"/>								
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateOutputSetType">
+		<xs:sequence>
+			<xs:element name="result" type="ClientTemplateOutputResulttype" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplateOutputDelType">
+		<xs:sequence>
+			<xs:element name="result" type="ClientTemplateOutputResulttype" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClientTemplatePreferencesType">
+		<xs:sequence>
+			<xs:element name="sbnet-user" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Create Sitebuilder user</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="clientTemplateLimits">
+		<xs:sequence>
+			<xs:element name="resource-policy" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="overuse" minOccurs="0">
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:enumeration value="block"/>
+									<xs:enumeration value="normal"/>
+									<xs:enumeration value="notify"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="limit" type="PleskLimitType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

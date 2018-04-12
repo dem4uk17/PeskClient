@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_mailname.xsd"/>
+	<xs:complexType name="WebmailInput">
+		<xs:choice>
+			<xs:element name="get-supported" type="NoneType"/>
+			<xs:element name="get-available" type="NoneType"/>
+			<xs:element name="register" type="RegisterInputType"/>
+			<xs:element name="unregister" type="UnRegisterInputType"/>
+			<xs:element name="enable" type="UnRegisterInputType"/>
+			<xs:element name="disable" type="UnRegisterInputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="RegisterInputType">
+		<xs:sequence>
+			<xs:element name="filter">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="service" type="ServiceType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnRegisterInputType">
+		<xs:sequence>
+			<xs:element name="filter">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name" type="string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebmailOutput">
+		<xs:choice>
+			<xs:element name="get-supported">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="WebmailResult"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-available">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="WebmailResult"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="register">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="WebmailResult" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="unregister">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="WebmailResult" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="enable">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="WebmailResult" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="disable">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="WebmailResult" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WebmailResult">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="webmail" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="name" type="string"/>
+								<xs:element name="status" type="string" minOccurs="0"/>
+								<xs:element name="url" type="string" minOccurs="0"/>								
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ServiceType">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="url" type="string"/>
+			<xs:element name="status" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="string">
+						<xs:enumeration value="enabled"/>
+						<xs:enumeration value="disabled"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

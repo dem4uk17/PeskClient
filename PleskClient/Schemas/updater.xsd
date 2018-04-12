@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="AutoinstallerInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="check"/>
+			<xs:element name="get-updates"/>
+			<xs:element name="get-components">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="update-id">
+							<xs:annotation>
+								<xs:documentation> Select update ID (version) for operate</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="install-component">
+				<xs:annotation>
+					<xs:documentation>Install specified component from selected release</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:choice>
+							<xs:element name="update-id">
+								<xs:annotation>
+									<xs:documentation> Select release ID (version) for operate</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="component-id"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="update">
+				<xs:annotation>
+					<xs:documentation>Install all components from selected release</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="update-id">
+							<xs:annotation>
+								<xs:documentation> Select update ID (version) for operate</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="AutoinstallerOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="check" type="UpdaterCheckOutputType"/>
+			<xs:element name="get-updates" type="UpdaterGetUpdatesOutputType"/>
+			<xs:element name="get-components" type="UpdaterGetComponentsOutputType"/>
+			<xs:element name="install-component" type="UpdaterInstallComponentOutputType"/>
+			<xs:element name="update" type="UpdaterUpdateOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ReleaseType">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="action"/>
+			<xs:element name="description"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpdateType">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="action" type="UpdateActionType"/>
+			<xs:element name="description" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="UpdateActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="install"/>
+			<xs:enumeration value="update"/>
+			<xs:enumeration value="unknown"/>
+			<xs:enumeration value="up2date"/>
+			<xs:enumeration value="upgrade"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="UpdaterCheckOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpdaterGetUpdatesOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="update" type="UpdateType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpdaterGetComponentsOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="component" type="ComponentType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ComponentType">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="action" type="ComponentActionType"/>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="server-build-time" type="xs:int" nillable="true"/>
+			<xs:element name="local-build-time" type="xs:int" nillable="true"/>
+			<xs:element name="server-version" type="xs:string" nillable="true"/>
+			<xs:element name="local-version" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ComponentActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="up2date"/>
+			<xs:enumeration value="install"/>
+			<xs:enumeration value="upgrade"/>
+			<xs:enumeration value="unknown"/>
+			<xs:enumeration value="error"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="UpdaterInstallComponentOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpdaterUpdateOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

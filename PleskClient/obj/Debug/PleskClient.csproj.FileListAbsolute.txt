@@ -1,0 +1,5 @@
+c:\users\user\documents\visual studio 2015\Projects\PleskClient\PleskClient\bin\Debug\PleskClient.dll
+c:\users\user\documents\visual studio 2015\Projects\PleskClient\PleskClient\bin\Debug\PleskClient.pdb
+c:\users\user\documents\visual studio 2015\Projects\PleskClient\PleskClient\obj\Debug\PleskClient.csprojResolveAssemblyReference.cache
+c:\users\user\documents\visual studio 2015\Projects\PleskClient\PleskClient\obj\Debug\PleskClient.dll
+c:\users\user\documents\visual studio 2015\Projects\PleskClient\PleskClient\obj\Debug\PleskClient.pdb

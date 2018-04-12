@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="SSOInput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="enable" type="NoneType">
+				<xs:annotation>
+					<xs:documentation>Enable SSO mode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="disable" type="NoneType">
+				<xs:annotation>
+					<xs:documentation>Disable SSO mode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="register" type="SSORegisterInput">
+				<xs:annotation>
+					<xs:documentation>Register Plesk to IdP</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="set-default-idp" type="SSOSetDefaultRelayInput"/>
+			<xs:element name="get-default-idp" type="NoneType"/>
+			<xs:element name="restore-default-idp" type="NoneType"/>
+			<xs:element name="set-branded-idp" type="SSOSetRelayInput"/>
+			<xs:element name="get-branded-idp" type="SSOGetRelayInput"/>
+			<xs:element name="del-branded-idp" type="SSODelRelayInput"/>
+			<xs:element name="add-delegation-rule" type="SSOAddDelegrationRuleInput"/>
+			<xs:element name="del-delegation-rule" type="SSODelDelegationRuleInput"/>
+			<xs:element name="get-prefs" type="NoneType"/>
+			<xs:element name="set" type="SSOSetInput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SSOOutput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="enable" type="SSOEnableOutput"/>
+			<xs:element name="disable" type="SSODisableOutput"/>
+			<xs:element name="register" type="SSORegisterOutput"/>
+			<xs:element name="get-prefs" type="SSOGetPrefsOutput"/>
+			<xs:element name="set-default-idp" type="SSOSetDefaultRelayOutput"/>
+			<xs:element name="get-default-idp" type="SSOGetDefaultRelayOutput"/>
+			<xs:element name="restore-default-idp" type="SSORestoreDefaultRelayOutput"/>
+			<xs:element name="set-branded-idp" type="SSOSetRelayOutput"/>
+			<xs:element name="get-branded-idp" type="SSOGetRelayOutput"/>
+			<xs:element name="del-branded-idp" type="SSODelRelayOutput"/>
+			<xs:element name="add-delegation-rule" type="SSOAddDelegationRuleOutput"/>
+			<xs:element name="del-delegation-rule" type="SSODelDelegationRuleOutput"/>
+			<xs:element name="set" type="SSORegisterOutput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SSOEnableOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSODisableOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOPrefs">
+		<xs:sequence>
+			<xs:element name="idp-url" type="base64" minOccurs="0"/>
+			<xs:element name="enabled" type="boolean"/>
+			<xs:element name="application-id" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOSetDefaultRelayInput">
+		<xs:sequence>
+			<xs:element name="idp-url" type="base64"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOSetRelayInput">
+		<xs:sequence>
+			<xs:element name="idp-url" type="base64"/>
+			<xs:element name="http-request-domain" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOGetRelayInput">
+		<xs:sequence>
+			<xs:element name="filter" type="SSOGetRelayFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOGetRelayFilter">
+		<xs:choice minOccurs="0">
+			<xs:element name="http-request-domain" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SSODelRelayInput">
+		<xs:sequence>
+			<xs:element name="filter" type="SSODelRelayFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOSetDefaultRelayOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOGetDefaultRelayOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="idp-url" type="base64"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSORestoreDefaultRelayOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOSetRelayOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOGetRelayOutput">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="record" type="SSOBrangingRecord"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOBrangingRecord">
+		<xs:sequence>
+			<xs:element name="idp-url" type="base64"/>
+			<xs:element name="http-request-domain" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSODelRelayOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSODelRelayFilter">
+		<xs:choice minOccurs="0">
+			<xs:element name="idp-url" type="base64" maxOccurs="unbounded"/>
+			<xs:element name="http-request-domain" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SSORegisterInput">
+		<xs:sequence>
+			<xs:element name="idp-url" type="base64">
+				<xs:annotation>
+					<xs:documentation>IdP URL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSORegisterOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOAddDelegrationRuleInput">
+		<xs:sequence>
+			<xs:element name="sp-id" type="string">
+				<xs:annotation>
+					<xs:documentation>Service provider ID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sp-login" type="string">
+				<xs:annotation>
+					<xs:documentation>Account of third-party application</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="plesk-login" type="string">
+				<xs:annotation>
+					<xs:documentation>Plesk account</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSODelDelegationRuleInput">
+		<xs:sequence>
+			<xs:element name="sp-id" type="string">
+				<xs:annotation>
+					<xs:documentation>Service provider ID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sp-login" type="string">
+				<xs:annotation>
+					<xs:documentation>Account of third-party application</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="plesk-login" type="string">
+				<xs:annotation>
+					<xs:documentation>Plesk account</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOAddDelegationRuleOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSODelDelegationRuleOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOGetPrefsOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="prefs" type="SSOPrefs"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSOSetInput">
+		<xs:sequence>
+			<xs:element name="sso-server-hostname" type="string">
+				<xs:annotation>
+					<xs:documentation>Hostname of SSO server</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema>

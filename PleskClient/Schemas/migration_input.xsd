@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_migration.xsd"/>
+	<xs:complexType name="MigrationInputPacket">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="migration" type="MigrationInputType"/>
+		</xs:choice>
+		<xs:attribute name="version" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="MigrationInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="start" type="MigrationArguments"/>
+			<xs:element name="finish" type="MigrationId"/>
+			<xs:element name="get_fs"/>
+			<xs:element name="get_status" type="MigrationId"/>
+			<xs:element name="check" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MigrationId">
+		<xs:sequence>
+			<xs:element name="migration_id"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

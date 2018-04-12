@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:include schemaLocation="plesk_common.xsd"/>
+    <xs:complexType name="ExtensionInputType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="install">
+                <xs:annotation>
+                    <xs:documentation>Download and install a extension with the given URL</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="url" type="urlType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="call">
+                <xs:annotation>
+                    <xs:documentation>Call extension via API-RPC</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any processContents="skip" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ExtensionOutputType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="install">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="call">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="resultFilterType">
+                                        <xs:sequence>
+                                            <xs:any processContents="skip" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>

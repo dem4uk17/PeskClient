@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="APSCatalogInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="apply-own-bundles-config" type="string"/>
+			<xs:element name="install-applications-bundle">
+				<xs:simpleType>
+					<xs:restriction base="int">
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="2"/>
+						<xs:enumeration value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="get-installation-progress"/>
+			<xs:element name="set" type="APSSetInputType"/>
+			<xs:element name="get" type="APSGetInputType"/>
+			<xs:element name="install-applications" type="InstallApplicationsInputType"/>
+			<xs:element name="get-applications-list"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="APSCommonResultType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSCatalogOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="apply-own-bundles-config" type="APSCommonResultType"/>
+			<xs:element name="install-applications-bundle" type="APSCommonResultType"/>
+			<xs:element name="get-installation-progress" type="APSGetInstallationOutputProgress"/>
+			<xs:element name="set" type="APSSetOutputType"/>
+			<xs:element name="get" type="APSGetOutputType"/>
+			<xs:element name="install-applications" type="InstallApplicationsOutputType"/>
+			<xs:element name="get-applications-list" type="GetApplicationsOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="APSGetInstallationOutputProgress">
+		<xs:sequence>
+			<xs:element name="result" type="APSGetInstallationOutputProgressResult"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSGetInstallationOutputProgressResult">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:choice minOccurs="0">
+					<xs:element name="finished"/>
+					<xs:element name="in-progress" type="APSInstallationInProgress"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="APSInstallationInProgress">
+		<xs:sequence>
+			<xs:element name="total" type="xs:integer"/>
+			<xs:element name="completed" type="xs:integer"/>
+			<xs:element name="current" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSetInputType">
+		<xs:sequence>
+			<xs:element name="aps-catalog-url" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>APS applications catalog address</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="string">
+						<xs:minLength value="0"/>
+						<xs:maxLength value="255"/>
+						<xs:whiteSpace value="collapse"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSGetInputType">
+		<xs:sequence>
+			<xs:element name="aps-catalog-url" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSetOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="APSSetResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSetResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="APSGetOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="APSGetResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSGetResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence>
+					<xs:element name="aps-catalog-url" type="string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="InstallApplicationsInputType">
+		<xs:sequence>
+			<xs:element name="filter">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="application" type="ApplicationType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApplicationType">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="version" type="string" minOccurs="0"/>
+			<xs:element name="release" type="string" minOccurs="0"/>
+			<xs:element name="vendor" type="string" minOccurs="0"/>
+			<xs:element name="packager" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InstallApplicationsOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence>
+								<xs:element name="application" type="ApplicationType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetApplicationsOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence>
+								<xs:element name="application" type="ApplicationType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

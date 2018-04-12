@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="server_input.xsd"/>
+	<xs:include schemaLocation="client_input.xsd"/>
+	<xs:include schemaLocation="dns_input.xsd"/>
+	<xs:include schemaLocation="webspace.xsd"/>
+	<xs:include schemaLocation="certificate_input.xsd"/>
+	<xs:include schemaLocation="mail_input.xsd"/>
+	<xs:include schemaLocation="database_input.xsd"/>
+	<xs:include schemaLocation="migration_input.xsd"/>
+	<xs:include schemaLocation="domainalias_input.xsd"/>
+	<xs:include schemaLocation="ip_input.xsd"/>
+	<xs:include schemaLocation="event_log_input.xsd"/>
+	<xs:include schemaLocation="secret_key_input.xsd"/>
+	<xs:include schemaLocation="ui_input.xsd"/>
+	<xs:include schemaLocation="domain_template.xsd"/>
+	<xs:include schemaLocation="client_template.xsd"/>
+	<xs:include schemaLocation="webuser.xsd"/>
+	<xs:include schemaLocation="maillist.xsd"/>
+	<xs:include schemaLocation="virtdir.xsd"/>
+	<xs:include schemaLocation="spamfilter.xsd"/>
+	<xs:include schemaLocation="ftpuser.xsd"/>
+	<xs:include schemaLocation="session.xsd"/>
+	<xs:include schemaLocation="updater.xsd"/>
+	<xs:include schemaLocation="locale.xsd"/>
+	<xs:include schemaLocation="logrotation.xsd"/>
+	<xs:include schemaLocation="backup.xsd"/>
+	<xs:include schemaLocation="sso.xsd"/>
+	<xs:include schemaLocation="protected_dir.xsd"/>
+	<xs:include schemaLocation="subdomain.xsd"/>
+	<xs:include schemaLocation="reseller.xsd"/>
+	<xs:include schemaLocation="reseller_template.xsd"/>
+	<xs:include schemaLocation="aps.xsd"/>
+	<xs:include schemaLocation="domain_addon_template.xsd"/>
+	<xs:include schemaLocation="site.xsd"/>
+	<xs:include schemaLocation="user.xsd"/>
+	<xs:include schemaLocation="role.xsd"/>
+	<xs:include schemaLocation="bl_upgrade.xsd"/>
+	<xs:include schemaLocation="webmail.xsd"/>
+	<xs:include schemaLocation="plan_item.xsd"/>
+	<xs:include schemaLocation="sitebuilder.xsd"/>
+	<xs:include schemaLocation="service_node.xsd"/>
+	<xs:include schemaLocation="ip_ban.xsd"/>
+    <xs:include schemaLocation="php_handler.xsd"/>
+    <xs:include schemaLocation="extension.xsd"/>
+    <xs:element name="packet">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="RequestPacketType">
+					<xs:sequence>
+						<xs:element name="request-settings" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="setting" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="name"/>
+												<xs:element name="value" minOccurs="0"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:choice maxOccurs="unbounded">
+							<xs:element name="server" type="ServerOperatorType"/>
+							<xs:element name="customer" type="ClientTypeRequest"/>
+							<xs:element name="webspace" type="DomainTypeRequest"/>
+							<xs:element name="subdomain" type="SubdomainInputType"/>
+							<xs:element name="dns" type="DNSInputType"/>
+							<xs:element name="db_server" type="DBServerTypeRequest"/>
+							<xs:element name="mail" type="MailTypeRequest"/>
+							<xs:element name="migration" type="MigrationInputType"/>
+							<xs:element name="certificate" type="CertificateActionRequest"/>
+							<xs:element name="site-alias" type="DomainAliasInputType"/>
+							<xs:element name="ip" type="IpInputType"/>
+							<xs:element name="event_log" type="EventLogInputType"/>
+							<xs:element name="spamfilter" type="SpamFilterInputType"/>
+							<xs:element name="secret_key" type="SecretKeyInputType"/>
+							<xs:element name="ui" type="UIInputType"/>
+							<xs:element name="service-plan" type="DomainTemplateInputType"/>
+							<xs:element name="webuser" type="WebUserInputType"/>
+							<xs:element name="maillist" type="MaillistInputType"/>
+							<xs:element name="virtdir" type="VDirInputType"/>
+							<xs:element name="database" type="DatabaseInputType"/>
+							<xs:element name="ftp-user" type="FtpUserInputType"/>
+							<xs:element name="session" type="SessionInputType"/>
+							<xs:element name="updater" type="AutoinstallerInputType"/>
+							<xs:element name="locale" type="LocaleInput"/>
+							<xs:element name="log-rotation" type="LogRotationInput"/>
+							<xs:element name="backup-manager" type="BackupInputType"/>
+							<xs:element name="sso" type="SSOInput"/>
+							<xs:element name="protected-dir" type="ProtectedDirInput"/>
+							<xs:element name="reseller" type="ResellerInput"/>
+							<xs:element name="reseller-plan" type="ResellerTemplateInputType"/>
+							<xs:element name="aps" type="APSInputType"/>
+							<xs:element name="service-plan-addon" type="DomainAddonTemplateInputType"/>
+							<xs:element name="site" type="SiteTypeRequest"/>
+							<xs:element name="user" type="UserInput"/>
+							<xs:element name="role" type="RoleInput"/>
+							<xs:element name="business-logic-upgrade" type="BLUpgradeInput"/>
+							<xs:element name="webmail" type="WebmailInput"/>
+							<xs:element name="plan-item" type="PlanItemInputType"/>
+							<xs:element name="sitebuilder" type="siteBuilderInput"/>
+							<xs:element name="service-node" type="ServiceNodeInput"/>
+							<xs:element name="ip-ban" type="IpBanInput"/>
+                            <xs:element name="php-handler" type="PhpHandlerInput"/>
+                            <xs:element name="extension" type="ExtensionInputType"/>
+                        </xs:choice>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="RequestPacketType">
+		<xs:attribute name="version" type="string"/>
+	</xs:complexType>
+</xs:schema>

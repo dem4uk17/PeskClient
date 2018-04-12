@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="WebUserInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="WebUserAddInputType"/>
+			<xs:element name="del" type="WebUserDelInputType"/>
+			<xs:element name="set" type="WebUserSetInputType"/>
+			<xs:element name="get" type="WebUserGetInputType"/>
+			<xs:element name="set-prefs" type="WebUserSetPrefInputType"/>
+			<xs:element name="get-prefs" type="WebUserGetPrefInputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WebUserAddInputType">
+		<xs:sequence>
+			<xs:element name="site-id" type="id_type"/>
+			<xs:element name="login" type="string"/>
+			<xs:sequence minOccurs="0">
+				<xs:element name="password" type="string"/>
+				<xs:element name="password-type" type="passwdType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:element name="ftp-quota" type="int" minOccurs="0"/>
+			<xs:element name="services" type="ServicesType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserFilter">
+		<xs:choice>
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="login" type="string" maxOccurs="unbounded"/>
+			<xs:element name="site-id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="site-name" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WebUserDelInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="WebUserFilter"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="site-id" type="id_type"/>
+				<xs:element name="site-name" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="WebUserAddOutputType"/>
+			<xs:element name="del" type="WebUserDelOutputType"/>
+			<xs:element name="set" type="WebUserSetOutputType"/>
+			<xs:element name="get" type="WebUserGetOutputType"/>
+			<xs:element name="set-prefs" type="WebUserSetPrefOutputType"/>
+			<xs:element name="get-prefs" type="WebUserGetPrefOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WebUserAddOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserDelOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtendedResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WebUserBindingInputType">
+		<xs:choice>
+			<xs:element name="id" type="NoneType"/>
+			<xs:element name="login" type="NoneType"/>
+			<xs:element name="site-id" type="NoneType"/>
+			<xs:element name="site-name" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WebUserResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="list" type="WebUserList"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WebUserType">
+		<xs:sequence>
+			<xs:element name="id"/>
+			<xs:element name="login" type="string"/>
+			<xs:element name="password" type="string"/>
+			<xs:sequence minOccurs="0">
+				<xs:element name="ftp-quota" type="int" minOccurs="0"/>
+				<xs:element name="asp" type="boolean" minOccurs="0"/>
+				<xs:element name="ssi" type="boolean" minOccurs="0"/>
+				<xs:element name="php" type="boolean" minOccurs="0"/>
+				<xs:element name="cgi" type="boolean" minOccurs="0"/>
+				<xs:element name="mod_perl" type="boolean" minOccurs="0"/>
+				<xs:element name="mod_python" type="boolean" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserList">
+		<xs:sequence>
+			<xs:element name="item" type="WebUserType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserGetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="WebUserFilter"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="site-id" type="id_type"/>
+				<xs:element name="site-name" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserGetOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="login" type="string"/>
+								<xs:sequence minOccurs="0">
+									<xs:element name="ftp-quota" type="int" minOccurs="0"/>
+									<xs:element name="services" type="ServicesType" minOccurs="0"/>
+								</xs:sequence>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserSetParam">
+		<xs:sequence minOccurs="0">
+			<xs:sequence minOccurs="0">
+				<xs:element name="password" type="string"/>
+				<xs:element name="password-type" type="passwdType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:element name="ftp-quota" type="int" minOccurs="0"/>
+			<xs:element name="services" type="ServicesType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserSetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="WebUserFilter"/>
+			<xs:element name="values" type="WebUserSetParam"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="site-id" type="id_type"/>
+				<xs:element name="site-name" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserSetOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserSetPrefInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="WebUserOwnFilter"/>
+			<xs:element name="values" type="WebUserPrefs"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="site-id" type="id_type"/>
+				<xs:element name="site-name" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserPrefs">
+		<xs:sequence>
+			<xs:element name="wuscripts" type="boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserSetPrefOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserGetPrefInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="WebUserOwnFilter"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="site-id" type="id_type"/>
+				<xs:element name="site-name" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebUserOwnFilter">
+		<xs:choice>
+			<xs:element name="site-id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="site-name" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WebUserGetPrefOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="wuscripts" type="boolean"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServicesType">
+		<xs:sequence>
+			<xs:element name="service" type="WebuserScriptType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebuserScriptType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:anySimpleType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

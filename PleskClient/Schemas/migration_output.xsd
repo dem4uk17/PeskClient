@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_migration.xsd"/>
+	<xs:complexType name="MigrationOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="start" type="MigrationOutputStartType"/>
+			<xs:element name="finish" type="MigrationOutputFinishType"/>
+			<xs:element name="get_fs" type="MigrationOutputGetFsType"/>
+			<xs:element name="get_status" type="MigrationOutputGetStatusType"/>
+			<xs:element name="check" type="MigrationOutputFinishType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MigrationOutputStartType">
+		<xs:sequence>
+			<xs:element name="result" type="MigrationOutputStartResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MigrationOutputStartResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="migration_id" type="string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MigrationOutputGetStatusType">
+		<xs:sequence>
+			<xs:element name="result" type="MigrationOutputGetStatusResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MigrationOutputGetStatusResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:choice minOccurs="0">
+					<xs:element name="migration_status" type="MigrationStatus"/>
+					<xs:element name="finished" type="MigrationFinishedType"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MigrationFinishedType">
+		<xs:choice>
+			<xs:element name="success"/>
+			<xs:element name="error" type="ErrorType" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ErrorType">
+		<xs:choice>
+			<xs:element name="message" type="xs:string"/>
+			<xs:sequence>
+				<xs:element name="object" type="ObjectErrorType"/>
+				<xs:element name="message" type="xs:string" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ObjectErrorType">
+		<xs:sequence>
+			<xs:element name="type" type="xs:string"/>
+			<xs:element name="name" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MigrationOutputFinishType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MigrationOutputGetFsType">
+		<xs:sequence>
+			<xs:element name="result" type="MigrationOutputGetFsResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MigrationOutputGetFsResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="fs" type="FS" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FS">
+		<xs:sequence>
+			<xs:element name="mountpoint" type="string"/>
+			<xs:element name="device" type="string"/>
+			<xs:element name="mode" type="FsReadWriteStatus"/>
+			<xs:element name="size" type="string"/>
+			<xs:element name="free" type="string"/>
+			<xs:element name="type" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="FsReadWriteStatus">
+		<xs:restriction base="string">
+			<xs:enumeration value="rw"/>
+			<xs:enumeration value="ro"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="MigrationStatus">
+		<xs:sequence>
+			<xs:element name="total" type="xs:integer"/>
+			<xs:element name="completed" type="xs:integer"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_domain.xsd"/>
+	<xs:simpleType name="BackupTaskIdType">
+		<xs:annotation>
+			<xs:documentation>Backup task ID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:pattern value="[\-]?[0-9]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BackupInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="get-remote-storage-settings" type="BackupGetRemoteStorageSettingsInput"/>
+			<xs:element name="set-remote-storage-settings" type="BackupSetRemoteStorageInput"/>
+			<xs:element name="backup-webspace" type="BackupDomainInput"/>
+			<xs:element name="backup-customer" type="BackupClientInput"/>
+			<xs:element name="backup-reseller" type="BackupResellerInput"/>
+			<xs:element name="backup-server" type="BackupServerInput"/>
+			<xs:element name="get-tasks-info" type="BackupGetBackupStatusInput"/>
+			<xs:element name="get-local-backup-list" type="BackupGetLocalBackupListInput"/>
+			<xs:element name="import-file" type="BackupImportFileInput"/>
+			<xs:element name="download-file" type="BackupDownloadFileInput"/>
+			<xs:element name="get-supported-protocols" type="NoneType"/>
+			<xs:element name="stop-backup" type="BackupStopInput"/>
+			<xs:element name="remove-file" type="BackupRemoveFileInput"/>
+			<xs:element name="get-server-wide-settings" type="NoneType"/>
+			<xs:element name="set-server-wide-settings" type="BackupSetServerWideSettingsInput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BackupOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="get-remote-storage-settings" type="BackupGetRemoteStorageSettingsOutput"/>
+			<xs:element name="set-remote-storage-settings" type="BackupSetRemoteStorageSettingsOutput"/>
+			<xs:element name="backup-server" type="BackupCommandOutput"/>
+			<xs:element name="backup-reseller" type="BackupCommandOutput"/>
+			<xs:element name="backup-webspace" type="BackupCommandOutput"/>
+			<xs:element name="backup-customer" type="BackupCommandOutput"/>
+			<xs:element name="get-tasks-info" type="BackupGetBackupStatusOutput"/>
+			<xs:element name="get-local-backup-list" type="BackupGetLocalBackupListOutput"/>
+			<xs:element name="import-file" type="BackupImportFileOutput"/>
+			<xs:element name="download-file" type="BackupDownloadFileOutput"/>
+			<xs:element name="get-supported-protocols" type="BackupGetSupportedProtocolsOutput"/>
+			<xs:element name="stop-backup" type="BackupStopOutput"/>
+			<xs:element name="remove-file" type="BackupRemoveFileOutput"/>
+			<xs:element name="get-server-wide-settings" type="BackupGetServerWideSettingsOutput"/>
+			<xs:element name="set-server-wide-settings" type="BackupSetServerWideSettingsOutput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BackupRemoteStorage">
+		<xs:sequence>
+			<xs:element name="protocol"/>
+			<xs:element name="host" type="string" minOccurs="0"/>
+			<xs:element name="port" type="int" minOccurs="0"/>
+			<xs:element name="directory" type="string" minOccurs="0"/>
+			<xs:element name="login" type="string" minOccurs="0"/>
+			<xs:element name="password" type="string" nillable="true" minOccurs="0"/>
+			<xs:element name="passive-mode" type="boolean" minOccurs="0"/>
+			<xs:element name="use-ftps" type="boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupDomainInput">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="webspace-id" type="id_type"/>
+				<xs:element name="webspace-name" type="domainName"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="local" type="NoneType"/>
+				<xs:element name="remote" type="string"/>
+			</xs:choice>
+			<xs:element name="prefix" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Backup prefix</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string">
+				<xs:annotation>
+					<xs:documentation>Comments</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="split-size" type="int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Volume size.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="only-hosting"/>
+				<xs:element name="only-mail"/>
+			</xs:choice>
+			<xs:element name="only-configuration" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupClientInput">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="customer-id"/>
+				<xs:element name="customer-login"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="local" type="NoneType"/>
+				<xs:element name="remote" type="string"/>
+			</xs:choice>
+			<xs:element name="prefix" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Backup prefix</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string">
+				<xs:annotation>
+					<xs:documentation>Comments</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="split-size" type="int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Volume size.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="only-hosting"/>
+				<xs:element name="only-mail"/>
+			</xs:choice>
+			<xs:element name="only-configuration" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupGetRemoteStorageSettingsInput">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element name="webspace-id" type="id_type"/>
+				<xs:element name="webspace-name" type="domainName"/>
+				<xs:element name="customer-id" type="id_type"/>
+				<xs:element name="customer-login" type="string"/>
+				<xs:element name="reseller-id" type="id_type"/>
+				<xs:element name="reseller-login" type="string"/>
+				<xs:element name="server"/>
+			</xs:choice>
+			<xs:element name="protocol" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupGetRemoteStorageSettingsOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="settings" type="BackupRemoteStorage"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupSetRemoteStorageInput">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element name="webspace-id" type="id_type"/>
+				<xs:element name="webspace-name" type="domainName"/>
+				<xs:element name="customer-id" type="id_type"/>
+				<xs:element name="customer-login" type="string"/>
+				<xs:element name="reseller-id" type="id_type"/>
+				<xs:element name="reseller-login" type="string"/>
+				<xs:element name="server"/>
+			</xs:choice>
+			<xs:element name="settings" type="BackupRemoteStorage"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupSetRemoteStorageSettingsOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupCommandOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="task-id" type="BackupTaskIdType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackiupClientOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+			<xs:element name="task-id" type="BackupTaskIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupGetBackupStatusInput">
+		<xs:choice minOccurs="0">
+			<xs:element name="webspace-id" type="id_type"/>
+			<xs:element name="webspace-name" type="domainName"/>
+			<xs:element name="customer-id" type="id_type"/>
+			<xs:element name="customer-login" type="string"/>
+			<xs:element name="reseller-id" type="id_type"/>
+			<xs:element name="reseller-login" type="string"/>
+			<xs:element name="server"/>
+			<xs:element name="task-id" type="BackupTaskIdType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BackupGetBackupStatusOutput">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="task" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:choice>
+												<xs:element name="customer-id"/>
+												<xs:element name="webspace-id"/>
+												<xs:element name="reseller-id"/>
+												<xs:element name="server"/>
+											</xs:choice>
+											<xs:element name="id"/>
+											<xs:element name="status" type="BackupTaskStatus"/>
+											<xs:element name="started" type="string"/>
+											<xs:element name="prefix" type="string"/>
+											<xs:element name="filename" type="string"/>
+											<xs:element name="protocol" type="string"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupStopInput">
+		<xs:sequence>
+			<xs:element name="task-id" type="BackupTaskIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupStopOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupFile">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="creation-date" type="int">
+				<xs:annotation>
+					<xs:documentation>timestamp</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string" nillable="true"/>
+			<xs:element name="size" type="size"/>
+			<xs:element name="not-backup" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupGetLocalBackupListInput">
+		<xs:choice>
+			<xs:element name="webspace-id" type="id_type"/>
+			<xs:element name="webspace-name" type="domainName"/>
+			<xs:element name="customer-id" type="id_type"/>
+			<xs:element name="customer-login" type="string"/>
+			<xs:element name="reseller-id" type="id_type"/>
+			<xs:element name="reseller-login" type="string"/>
+			<xs:element name="server"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BackupGetLocalBackupListOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="backup" type="BackupType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupImportFileInput">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="webspace-id" type="id_type"/>
+				<xs:element name="webspace-name" type="domainName"/>
+				<xs:element name="customer-id" type="id_type"/>
+				<xs:element name="customer-login" type="string"/>
+				<xs:element name="reseller-id" type="id_type"/>
+				<xs:element name="reseller-login" type="string"/>
+				<xs:element name="server"/>
+			</xs:choice>
+			<xs:element name="tmp-filename" type="string"/>
+			<xs:element name="ignore-sign" type="boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupImportFileOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupDownloadFileInput">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="webspace-id" type="id_type"/>
+				<xs:element name="webspace-name" type="domainName"/>
+				<xs:element name="customer-id" type="id_type"/>
+				<xs:element name="customer-login" type="string"/>
+				<xs:element name="reseller-id" type="id_type"/>
+				<xs:element name="reseller-login" type="string"/>
+				<xs:element name="server"/>
+			</xs:choice>
+			<xs:element name="filename" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupDownloadFileOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupClientOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupGetSupportedProtocolsOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="protocol" type="string" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupType">
+		<xs:sequence>
+			<xs:element name="file" type="BackupFile" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupGetBackupProcessesInput">
+		<xs:choice minOccurs="0">
+			<xs:element name="domain" type="NoneType"/>
+			<xs:element name="client" type="NoneType"/>
+			<xs:element name="reseller" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BackupGetBackupProcessesOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="process" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:choice>
+												<xs:element name="webspace-id" type="id_type"/>
+												<xs:element name="client-id" type="id_type"/>
+												<xs:element name="reseller-id" type="id_type"/>
+											</xs:choice>
+											<xs:element name="started" type="string"/>
+											<xs:element name="filename" type="xs:string"/>
+											<xs:element name="protocol" minOccurs="0"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupRemoveFileInput">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="webspace-id" type="id_type"/>
+				<xs:element name="webspace-name" type="domainName"/>
+				<xs:element name="customer-id" type="id_type"/>
+				<xs:element name="customer-login" type="string"/>
+				<xs:element name="reseller-id" type="id_type"/>
+				<xs:element name="reseller-login" type="string"/>
+				<xs:element name="server"/>
+			</xs:choice>
+			<xs:element name="filename" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupRemoveFileOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupResellerInput">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="reseller-id"/>
+				<xs:element name="reseller-login"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="local" type="NoneType"/>
+				<xs:element name="remote" type="string"/>
+			</xs:choice>
+			<xs:element name="prefix" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Backup prefix</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string">
+				<xs:annotation>
+					<xs:documentation>Comments</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="split-size" type="int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Volume size.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="only-hosting"/>
+				<xs:element name="only-mail"/>
+			</xs:choice>
+			<xs:element name="only-configuration" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupServerInput">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="local" type="NoneType"/>
+				<xs:element name="remote" type="string"/>
+			</xs:choice>
+			<xs:element name="prefix" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Backup prefix</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string">
+				<xs:annotation>
+					<xs:documentation>Comments</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="split-size" type="int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Volume size.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="only-hosting"/>
+				<xs:element name="only-mail"/>
+			</xs:choice>
+			<xs:element name="only-configuration" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupServerOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+			<xs:element name="task-id" type="BackupTaskIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupResellerOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+			<xs:element name="task-id" type="BackupTaskIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="BackupTaskStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="working"/>
+			<xs:enumeration value="stopped"/>
+			<xs:enumeration value="failed"/>
+			<xs:enumeration value="finished"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BackupGetServerWideSettingsOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="settings" type="BackupServerWideSettings"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupSetServerWideSettingsInput">
+		<xs:sequence>
+			<xs:element name="settings" type="BackupServerWideSettings"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupSetServerWideSettingsOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BackupServerWideSettings">
+		<xs:sequence>
+			<xs:element name="max-backup-files" type="int" minOccurs="0"/>
+			<xs:element name="max-backup-processes" type="int" minOccurs="0"/>
+			<xs:element name="low-priority" type="boolean" minOccurs="0"/>
+			<xs:element name="do-not-compress" type="boolean" minOccurs="0"/>
+			<xs:element name="allow-local-ftp-backup" type="boolean" minOccurs="0"/>
+			<xs:element name="keep-local-backup" type="boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

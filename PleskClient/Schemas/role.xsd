@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="RoleInput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="RoleAddInput"/>
+			<xs:element name="get" type="RoleGetInput"/>
+			<xs:element name="set" type="RoleSetInput"/>
+			<xs:element name="del" type="RoleDelInput"/>
+			<xs:element name="get-permission-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="RoleSelectionPermissionFilter"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="RoleOutput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="RoleAddOutput"/>
+			<xs:element name="get" type="RoleGetOutput"/>
+			<xs:element name="set" type="RoleSetOutput"/>
+			<xs:element name="del" type="RoleDelOutput"/>
+			<xs:element name="get-permission-descriptor" type="RolePermissionDescriptorOutput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="RoleAddInput">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="owner-guid" type="string" minOccurs="0"/>
+			<xs:element name="permissions" type="RolePermissions" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RolePermissions">
+		<xs:sequence>
+			<xs:element name="permission" type="PleskPermissionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleGetInput">
+		<xs:sequence>
+			<xs:element name="filter" type="RoleSelectionFilter"/>
+			<xs:element name="owner-guid" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleSelectionFilter">
+		<xs:choice>
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="name" type="string" maxOccurs="unbounded"/>
+			<xs:element name="all" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="RoleSelectionPermissionFilter">
+		<xs:choice>
+			<xs:element name="owner-guid" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="RoleSetInput">
+		<xs:sequence>
+			<xs:element name="filter" type="RoleSelectionFilter"/>
+			<xs:element name="owner-guid" type="string" minOccurs="0"/>
+			<xs:element name="values" type="RoleValuesInput"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleDelInput">
+		<xs:sequence>
+			<xs:element name="filter" type="RoleSelectionFilter"/>
+			<xs:element name="owner-guid" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleValuesInput">
+		<xs:sequence>
+			<xs:element name="permissions" type="RolePermissions" minOccurs="0"/>
+			<xs:element name="new-name" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleAddOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type">
+									<xs:annotation>
+										<xs:documentation>New role ID on success</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleGetOutput">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="data" type="RoleGetOutputData"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleSetOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleDelOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RolePermissionDescriptorOutput">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="descriptor" type="ObjectDescriptor" minOccurs="0"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleGetOutputData">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="owner-guid" type="string"/>
+			<xs:element name="is-build-in" type="boolean"/>
+			<xs:element name="permissions" type="RolePermissions"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="serviceNodeFilterType">
+		<xs:annotation>
+			<xs:documentation>Fliter service nodes list</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="id" type="id_type" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>service node ID ( ID in Plesk DB)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ip-address" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>service node IP (ip address or "local" string)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="external-id" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>service node external ID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+    <xs:complexType name="serviceNodeTestRemoveOutput">
+        <xs:complexContent>
+            <xs:extension base="resultFilterType">
+                <xs:sequence minOccurs="0">
+                    <xs:element name="operationResult" type="result_status"/>
+                    <xs:element name="operationResultDescription" type="string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+	<xs:complexType name="ServiceNodeInput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:annotation>
+					<xs:documentation>Add service node</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ip-address" nillable="false">
+							<xs:annotation>
+								<xs:documentation>IP address of service node, or "local"</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="description" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Description of service node</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="0"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="type" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Service node type</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+									<xs:restriction base="string">
+										<xs:minLength value="1"/>
+									</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="access-key">
+								<xs:annotation>
+									<xs:documentation>Access key for service node agent</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="string">
+										<xs:minLength value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="no-access-key">
+								<xs:annotation>
+									<xs:documentation>Don't use access key</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="external-id" minOccurs="0">
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+                        <xs:element name="properties" type="serviceNodeSettings" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Update service node</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="serviceNodeFilterType"/>
+						<xs:element name="values">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="new-ip-address" minOccurs="0">
+										<xs:simpleType>
+											<xs:restriction base="ip_address">
+												<xs:minLength value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="description" minOccurs="0">
+										<xs:simpleType>
+											<xs:restriction base="string">
+												<xs:minLength value="0"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:choice minOccurs="0">
+										<xs:element name="access-key">
+											<xs:simpleType>
+												<xs:restriction base="string">
+													<xs:minLength value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="no-access-key"/>
+									</xs:choice>
+									<xs:element name="external-id" minOccurs="0">
+										<xs:simpleType>
+											<xs:restriction base="string">
+												<xs:minLength value="0"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+                                    <xs:element name="properties" type="serviceNodeSettings" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="list">
+				<xs:annotation>
+					<xs:documentation>Get list of service nodes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+            <xs:element name="reread-info">
+                <xs:annotation>
+                    <xs:documentation>Reread system information from Service Node host to the Management Node database</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="serviceNodeFilterType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="remove">
+                <xs:annotation>
+                    <xs:documentation>Check that service node can be unregistered and unregister it</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="serviceNodeFilterType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="test-remove">
+                <xs:annotation>
+                    <xs:documentation>Check that service node can be unregistered; or check that service node has no usage of some service</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="serviceNodeFilterType"/>
+                        <xs:element name="service-to-check" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Specify what service of the service node should be checked. Omitting this element causes to all services checking.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:choice>
+                                    <xs:element name="mail"/>
+                                    <xs:element name="web"/>
+                                    <xs:element name="db"/>
+                                </xs:choice>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ServiceNodeOutput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:annotation>
+					<xs:documentation>Add service node</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="NoneType">
+							<xs:sequence>
+								<xs:element name="result">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="resultType">
+												<xs:sequence minOccurs="0">
+													<xs:element name="id" type="int"/>
+												</xs:sequence>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="list">
+				<xs:annotation>
+					<xs:documentation>Get list of service nodes</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="node" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="id" type="int"/>
+														<xs:element name="ip-address" type="string"/>
+														<xs:element name="description" type="string"/>
+                                                        <xs:element name="type" type="string"/>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Update service node</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element name="reread-info">
+                <xs:annotation>
+                    <xs:documentation>Reread system information from Service Node host to the Management Node database</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="remove">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="serviceNodeTestRemoveOutput" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="test-remove">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="serviceNodeTestRemoveOutput" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+		</xs:choice>
+	</xs:complexType>
+    <xs:complexType name="serviceNodeSettings">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="property">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="name" type="string"/>
+                        <xs:element name="value" type="string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

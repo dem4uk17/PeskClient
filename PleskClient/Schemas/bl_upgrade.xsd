@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="BLUpgradeInput">
+		<xs:choice>
+			<xs:element name="get-customers-to-upgrade"/>
+			<xs:element name="get-subscriptions-to-upgrade"/>
+			<xs:element name="apply-solution" type="ApplyConvertionInput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BLUpgradeOutput">
+		<xs:choice>
+			<xs:element name="get-customers-to-upgrade" type="ObjectsListToUpgradeOutput"/>
+			<xs:element name="get-subscriptions-to-upgrade" type="ObjectsListToUpgradeOutput"/>
+			<xs:element name="apply-solution" type="ApplyConvertionOutput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ObjectsListToUpgradeOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="objects-group" type="ObjectGroupOutput" minOccurs="0"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjectGroupOutput">
+		<xs:sequence>
+			<xs:element name="solution-id" type="string"/>
+			<xs:element name="objects-description" type="string">
+				<xs:annotation>
+					<xs:documentation>Description what settings has this group</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="convertion-method" type="string">
+				<xs:annotation>
+					<xs:documentation>Changes that possible to made on this objects group</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="number" type="int">
+				<xs:annotation>
+					<xs:documentation>Number of objects in this group</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApplyConvertionInput">
+		<xs:sequence>
+			<xs:element name="filter">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="id" type="string" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Id of objects group</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApplyConvertionOutput">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="filter-id" type="xs:anySimpleType" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>This node is used for binding operation resull with input value that specified in filter. </xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="id" type="string" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Object ID</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

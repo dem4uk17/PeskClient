@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_domain.xsd"/>
+	<xs:complexType name="MaillistSimpleFilterType">
+		<xs:choice>
+			<xs:element name="list-id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="list-name" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MaillistFilterType">
+		<xs:choice>
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="name" type="string" maxOccurs="unbounded"/>
+			<xs:element name="site-id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="site-name" type="domainName" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MaillistInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add-list" type="MaillistAddListInputType"/>
+			<xs:element name="del-list" type="MaillistDelListInputType"/>
+			<xs:element name="get-list" type="MaillistGetListInputType"/>
+			<xs:element name="add-member" type="MaillistAddMemberInputType"/>
+			<xs:element name="get-members" type="MaillistGetMemberInputType"/>
+			<xs:element name="del-member" type="MaillistDelMemberInputType"/>
+			<xs:element name="enable" type="MaillistEnableInputType"/>
+			<xs:element name="disable" type="MaillistDisableInputType"/>
+			<xs:element name="enable-list" type="MaillistEnableListInputType"/>
+			<xs:element name="disable-list" type="MailistDisableListInputType"/>
+			<xs:element name="get-status" type="MaillistGetStatusInputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MailistOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add-list" type="MaillistAddOutputType"/>
+			<xs:element name="del-list" type="MaillistDelListOutputType"/>
+			<xs:element name="get-list" type="MaillistGetListOutputType"/>
+			<xs:element name="add-member" type="MailistAddMemberOutputType"/>
+			<xs:element name="del-member" type="MaillistDelMemberOutputType"/>
+			<xs:element name="get-members" type="MaillistGetMemberOutputType"/>
+			<xs:element name="enable" type="MaillistEnableOutputType"/>
+			<xs:element name="disable" type="MaillistDisableOutputType"/>
+			<xs:element name="enable-list" type="MailistEnableListOutoutType"/>
+			<xs:element name="disable-list" type="MaillistDisableListOutputType"/>
+			<xs:element name="get-status" type="MaillistGetStatusOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MaillistAddListInputType">
+		<xs:sequence>
+			<xs:element name="site-id" type="id_type"/>
+			<xs:element name="name" type="string"/>
+			<xs:element name="password" type="string"/>
+			<xs:element name="admin-email" type="emailType"/>
+			<xs:element name="notify" type="boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistAddOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistDelListInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistDelListOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistGetListInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistGetListOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="name" type="string"/>
+								<xs:element name="list-status" type="boolean"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistAddMemberInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistSimpleFilterType"/>
+			<xs:element name="id" type="emailType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MailistAddMemberOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="MaillistMemberResultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistDelMemberInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistSimpleFilterType"/>
+			<xs:element name="id" type="emailType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistDelMemberOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="MaillistMemberResultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistGetMemberInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistSimpleFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistGetMemberOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="MaillistGetMemberResultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistGetMemberResultType">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element name="status" type="result_status">
+					<xs:annotation>
+						<xs:documentation>Result status (ok/error)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="errcode" type="unsignedInt" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Error code if error occurred</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="errtext" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Error message if error occurred</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence minOccurs="0">
+				<xs:element name="filter-id" type="xs:anySimpleType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This node is used for binding operation resull with input value that specified in filter. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="id" type="emailType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Object ID</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistEnableInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistToggleFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistToggleFilterType">
+		<xs:choice>
+			<xs:element name="site-id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="site-name" type="domainName" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MaillistEnableOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistDisableInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistToggleFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistDisableOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistEnableListInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MailistEnableListOutoutType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MailistDisableListInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistDisableListOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistMemberResultType">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element name="status" type="result_status">
+					<xs:annotation>
+						<xs:documentation>Result status (ok/error)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="errcode" type="unsignedInt" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Error code if error occurred</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="errtext" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Error message if error occurred</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence minOccurs="0">
+				<xs:element name="filter-id" type="xs:anySimpleType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This node is used for binding operation resull with input value that specified in filter. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="id" type="emailType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Object ID</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistGetStatusInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="MaillistToggleFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaillistGetStatusOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="service-status" type="boolean"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

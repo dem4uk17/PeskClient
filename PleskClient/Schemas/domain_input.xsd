@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_domain.xsd"/>
+	<xs:complexType name="domainFilterType">
+		<xs:annotation>
+			<xs:documentation>Fliter domains list</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="id" type="id_type" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Domain ID ( ID in Plesk DB)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="owner-id" type="int" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Domain owner's ID </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="domain-name" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Domain name (UTF-8)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="owner-login" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Domain owner's login.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="guid" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Domain GUID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainTypeRequest">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="gen_setup">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="name" type="domainName"/>
+									<xs:element name="owner-id" type="int" minOccurs="0"/>
+									<xs:element name="owner-login" type="string" minOccurs="0"/>
+									<xs:element name="htype" type="domainHType" minOccurs="0"/>
+									<xs:element name="ip_address" type="ip_address"/>
+									<xs:element name="status" type="string" minOccurs="0"/>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="hosting" type="domainHostingAgentSet" minOccurs="0"/>
+						<xs:element name="limits" type="domainLimits" minOccurs="0"/>
+						<xs:element name="prefs" type="domainPrefs" minOccurs="0"/>
+						<xs:element name="user" type="domainUserSet" minOccurs="0"/>
+						<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+						<xs:choice minOccurs="0">
+							<xs:element name="template-id" type="id_type"/>
+							<xs:element name="template-name" type="string"/>
+							<xs:element name="template-guid" type="string"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:annotation>
+					<xs:documentation>Get domain(s) data from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Filter domains to be refreshed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="dataset" type="domainDatasetType">
+							<xs:annotation>
+								<xs:documentation>Domain information to be retrieved</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Set domain(s) data from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Filter domains to be refreshed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="values">
+							<xs:annotation>
+								<xs:documentation>Domain information to be updated</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="gen_setup" type="setGenSetupType" minOccurs="0"/>
+									<xs:element name="limits" type="domainLimits" minOccurs="0"/>
+									<xs:element name="prefs" type="domainPrefs" minOccurs="0"/>
+									<xs:element name="hosting" type="domainHostingAgentSet" minOccurs="0"/>
+									<xs:element name="user" type="domainUserSet" minOccurs="0"/>
+									<xs:element name="disk_usage" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="mailboxes" minOccurs="0"/>
+												<xs:element name="maillists" minOccurs="0"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del">
+				<xs:annotation>
+					<xs:documentation>Delete domain(s) from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="cform_buttons_list">
+				<xs:annotation>
+					<xs:documentation>List domain control form buttons</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be listed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+						<xs:element name="since_date" type="date" minOccurs="0"/>
+						<xs:element name="to_date" type="date" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="dom_id" type="int"/>
+						<xs:element name="date" type="date"/>
+						<xs:element name="smtp_in" type="long"/>
+						<xs:element name="smtp_out" type="long"/>
+						<xs:element name="pop3_imap_in" type="long"/>
+						<xs:element name="pop3_imap_out" type="long"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-limit-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-permission-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-physical-hosting-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="switch-template">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+						<xs:choice>
+							<xs:element name="template-guid" type="string"/>
+							<xs:element name="no-template"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="add-addon-template">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+						<xs:element name="template-guid" type="string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-addon-template">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+						<xs:element name="template-guid" type="string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

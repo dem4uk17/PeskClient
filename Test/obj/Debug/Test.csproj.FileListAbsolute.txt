@@ -1,0 +1,14 @@
+C:\Users\User\Documents\Visual Studio 2015\Projects\PleskClient\Test\bin\Debug\Test.exe.config
+C:\Users\User\Documents\Visual Studio 2015\Projects\PleskClient\Test\bin\Debug\Test.exe
+C:\Users\User\Documents\Visual Studio 2015\Projects\PleskClient\Test\bin\Debug\Test.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\PleskClient\Test\bin\Debug\PleskClient.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\PleskClient\Test\bin\Debug\PleskClient.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\PleskClient\Test\obj\Debug\Test.csprojResolveAssemblyReference.cache
+C:\Users\User\Documents\Visual Studio 2015\Projects\PleskClient\Test\obj\Debug\Test.exe
+C:\Users\User\Documents\Visual Studio 2015\Projects\PleskClient\Test\obj\Debug\Test.pdb
+C:\Projects\PleskClient test\Test\bin\Debug\Test.exe.config
+C:\Projects\PleskClient test\Test\obj\Debug\Test.exe
+C:\Projects\PleskClient test\Test\obj\Debug\Test.pdb
+C:\Projects\PleskClient\Test\bin\Debug\Test.exe.config
+C:\Projects\PleskClient\Test\obj\Debug\Test.exe
+C:\Projects\PleskClient\Test\obj\Debug\Test.pdb

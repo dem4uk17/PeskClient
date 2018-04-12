@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{61375CBB-D1F3-485A-B1A1-9B85251D91F7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PleskClient</RootNamespace>
+    <AssemblyName>PleskClient</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PleskClient.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schemas\agent_input.cs" />
+    <Compile Include="Schemas\agent_output.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Schemas\agent_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\agent_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\aps-catalog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\aps.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\backup.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\bl_upgrade.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\certificate_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\certificate_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\client_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\client_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\client_template.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\database_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\database_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\descriptor.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\desktop.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\dns_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\dns_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\domainalias_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\domainalias_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\domain_addon_template.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\domain_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\domain_list.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\domain_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\domain_template.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\event_log_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\event_log_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\event_log_types.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\extension.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\ftpuser.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\ip_ban.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\ip_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\ip_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\locale.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\logrotation.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\maillist.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\mail_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\mail_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\migration_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\migration_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\php_handler.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plan_item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_backup.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_client.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_custom_button.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_db.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_dns.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_domain.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_domainalias.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_mailname.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_migration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_secretkeys.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_server.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_siteapp.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\plesk_spamfilter.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\protected_dir.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\reseller.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\reseller_template.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\role.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\secret_key_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\secret_key_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\server_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\server_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\service_node.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\session.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\site.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\sitebuilder.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\spamfilter.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\sso.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\subdomain.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\template_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\template_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\ui_input.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\ui_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\updater.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\upload_output.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\user.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\virtdir.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\webmail.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\webspace.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\webuser.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:include schemaLocation="plesk_domain.xsd"/>
+	<xs:complexType name="MigrationArguments">
+		<xs:sequence>
+			<xs:element name="host" type="xs:string"/>
+			<xs:element name="login" type="xs:string"/>
+			<xs:element name="password" type="xs:string"/>
+			<xs:element name="destination-host-directory" type="xs:string"/>
+			<xs:element name="system-type" type="MigrationSystemType" minOccurs="0"/>
+			<xs:element name="content-transport" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Select content transport type. Values: archive, rsync. Default: archive. Unix only</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="only-hosting"/>
+				<xs:element name="only-mail"/>
+			</xs:choice>
+			<xs:element name="selected-objects" type="SelectedObjects"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionGetStatusResponse">
+		<xs:choice>
+			<xs:element name="working" type="StatusWorking"/>
+			<xs:element name="finished" type="StatusFinished"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SelectedObjects">
+		<xs:choice>
+			<xs:element name="migrate-resellers" type="SelectedResellers"/>
+			<xs:element name="migrate-customers" type="SelectedClients"/>
+			<xs:element name="migrate-webspaces" type="SelectedDomains" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SelectedDomains">
+		<xs:sequence>
+			<xs:element name="target-owner" type="xs:string"/>
+			<xs:element name="webspace" type="MappedDomain" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SelectedClients">
+		<xs:sequence>
+			<xs:element name="target-owner" type="xs:string"/>
+			<xs:element name="customer" type="MappedClient" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SelectedResellers">
+		<xs:sequence>
+			<xs:element name="reseller" type="MappedReseller" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- working -->
+	<xs:complexType name="StatusWorking">
+		<xs:choice>
+			<xs:element name="idle" type="StatusWorkingIdle"/>
+			<xs:element name="starting" type="StatusWorkingStarting"/>
+			<xs:element name="translate" type="StatusWorkingTranslate"/>
+			<xs:element name="deploy" type="StatusWorkingDeploy"/>
+			<xs:element name="agent" type="StatusWorkingAgent"/>
+			<xs:element name="dumping" type="MigrationAgentStatusWorkingDumping"/>
+			<xs:element name="transfer" type="StatusWorkingTransfer"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="StatusWorkingIdle"/>
+	<xs:complexType name="StatusWorkingStarting"/>
+	<xs:complexType name="StatusWorkingTranslate"/>
+	<xs:complexType name="StatusWorkingAgent">
+		<xs:sequence>
+			<xs:element name="host" type="xs:string"/>
+		</xs:sequence>
+		<xs:attribute name="action" type="AgentDeployStage" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="StatusWorkingTransfer">
+		<xs:sequence>
+			<xs:element name="host" type="xs:string"/>
+			<xs:choice>
+				<xs:element name="dumpfile" type="StatusWorkingTransferDumpFile"/>
+				<xs:element name="files" type="TransferFiles"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="speed" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="StatusWorkingTransferDumpFile"/>
+	<xs:complexType name="TransferFiles">
+		<xs:sequence>
+			<xs:element name="current-file" type="TransferFilesCurrentFileType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="total" type="xs:string" use="required"/>
+		<xs:attribute name="left" type="xs:string" use="required"/>
+		<xs:attribute name="size-total" type="xs:string" use="optional"/>
+		<xs:attribute name="size-left" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="TransferFilesCurrentFileType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="size" type="xs:string" use="optional"/>
+				<xs:attribute name="size-left" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="StatusWorkingDeploy">
+		<xs:sequence>
+			<xs:element name="current-object" type="StatusWorkingDeployCurrentObject" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="accounts" type="xs:integer" use="required"/>
+		<xs:attribute name="domains" type="xs:integer" use="required"/>
+		<xs:attribute name="accounts-left" type="xs:integer" use="required"/>
+		<xs:attribute name="domains-left" type="xs:integer" use="required"/>
+	</xs:complexType>
+	<!-- system type - only for windows -->
+	<xs:simpleType name="MigrationSystemType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="unix"/>
+			<xs:enumeration value="windows"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="StatusWorkingDeployCurrentObject">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="type" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- migration-agent-status-working -->
+	<xs:complexType name="MigrationAgentStatusWorking">
+		<xs:choice>
+			<xs:element name="preparing" type="MigrationAgentStatusWorkingPreparing"/>
+			<xs:element name="dumping" type="MigrationAgentStatusWorkingDumping"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MigrationAgentStatusWorkingPreparing"/>
+	<xs:complexType name="MigrationAgentStatusWorkingDumping">
+		<xs:attribute name="total-domains" type="xs:integer" use="required"/>
+		<xs:attribute name="total-clients" type="xs:integer" use="required"/>
+		<xs:attribute name="completed-domains" type="xs:integer" use="required"/>
+		<xs:attribute name="completed-clients" type="xs:integer" use="required"/>
+		<xs:attribute name="current-object" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<!-- finished -->
+	<xs:complexType name="StatusFinished">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="message" type="MessageType"/>
+			<xs:element name="object" type="ObjectType"/>
+		</xs:choice>
+		<xs:attribute name="status" type="StatusFinishedType" use="required"/>
+		<xs:attribute name="log-location" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:simpleType name="StatusFinishedType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="success"/>
+			<xs:enumeration value="error"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ObjectType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="object" type="ObjectType"/>
+			<xs:element name="message" type="MessageType"/>
+		</xs:choice>
+		<xs:attribute name="type" type="xs:string" use="required"/>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="MessageType">
+		<xs:sequence>
+			<xs:element name="context" type="xs:string" minOccurs="0"/>
+			<xs:element name="file" type="xs:string" minOccurs="0"/>
+			<xs:element name="line" type="xs:string" minOccurs="0"/>
+			<xs:element name="text" type="xs:string"/>
+			<xs:element name="message" type="MessageType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="code" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="AgentDeployStage">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="deploy"/>
+			<xs:enumeration value="wait"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- for migration_output.xsd & backend-interface.xsd -->
+	<xs:complexType name="MigrationApiStatusWorking">
+		<xs:choice>
+			<xs:element name="preparing" type="MigrationAgentStatusWorkingPreparing"/>
+			<xs:sequence>
+				<xs:element name="total" type="xs:integer"/>
+				<xs:element name="completed" type="xs:integer"/>
+				<xs:element name="description" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:complexType>
+	<!-- very common types -->
+	<xs:complexType name="Ip">
+		<xs:sequence>
+			<xs:element name="ip-type" type="IpTypeType"/>
+			<xs:element name="ip-address" type="IpAddressType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="IpTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="shared"/>
+			<xs:enumeration value="exclusive"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IpAddressType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([01]?\p{Nd}{1,2}|2([0-4]\p{Nd}|5[0-5]))(\.([01]?\p{Nd}{1,2}|2([0-4]\p{Nd}|5[0-5]))){3}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IpMaskType">
+		<xs:restriction base="xs:short">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="MappedReseller">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="ip" type="MappedIp" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Missing clients specification means "no clients" -->
+			<xs:element name="customer" type="MappedClient" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Missing domains specification means "no domains" -->
+			<xs:element name="webspace" type="MappedDomain" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MappedClient">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="ip" type="MappedIp" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Missing domains specification means "no domains" -->
+			<xs:element name="webspace" type="MappedDomain" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MappedDomain">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>UTF-8 domain name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ip" type="MappedIp" minOccurs="0"/>
+			<xs:element name="db-server" type="MappedDbServer" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MappedIp">
+		<xs:sequence>
+			<xs:element name="old" type="Ip"/>
+			<xs:element name="new" type="Ip"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MappedDbServer">
+		<xs:sequence>
+			<xs:element name="old" type="DbServer"/>
+			<xs:element name="new" type="DbServer"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DbServer">
+		<xs:sequence>
+			<xs:element name="host" type="xs:string"/>
+			<xs:element name="port" type="xs:string"/>
+			<xs:element name="type" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SystemIp">
+		<xs:annotation>
+			<xs:documentation>System IP address representation</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Ip">
+				<xs:sequence>
+					<xs:element name="ip-netmask" type="IpMaskType"/>
+					<xs:element name="ip-interface" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MappedSystemIp">
+		<xs:sequence>
+			<xs:element name="old" type="SystemIp"/>
+			<xs:element name="new" type="SystemIp"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SelectedServer">
+		<xs:sequence>
+			<xs:element name="client" type="MappedClient" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="db-server" type="MappedDbServer" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="license" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>If this element is specified - Plesk license will be restored from backup</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ip" type="MappedSystemIp" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="default-ip" type="IpAddressType" minOccurs="0"/>
+			<xs:element name="hostname" type="xs:string" minOccurs="0"/>
+			<xs:element name="restore-admin-pinfo" type="NoneType" minOccurs="0"/>
+			<xs:element name="password" type="xs:string" minOccurs="0"/>
+			<xs:element name="restore-certificates" type="NoneType" minOccurs="0"/>
+			<xs:element name="restore-mail" type="NoneType" minOccurs="0"/>
+			<xs:element name="restore-dns" type="NoneType" minOccurs="0"/>
+			<xs:element name="restore-custom-buttons" type="NoneType" minOccurs="0"/>
+			<xs:element name="restore-domain-templates" type="NoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AgentDumpingStatus">
+		<xs:annotation>
+			<xs:documentation>CP agents emit the status in this format</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pid" type="xs:string"/>
+			<xs:element name="account" type="xs:string"/>
+			<xs:element name="domain" type="xs:string"/>
+			<xs:element name="accounts-left" type="xs:integer"/>
+			<xs:element name="domains-left" type="xs:integer"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

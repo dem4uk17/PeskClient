@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="common.xsd"/>
+	<xs:complexType name="siteBuilderInput">
+		<xs:choice>
+			<xs:element name="assign-trial-site" type="assignTrialSiteInput"/>
+			<xs:element name="suspend-site" type="suspendSiteInput"/>
+			<xs:element name="remove-site" type="removeSiteInput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="siteBuilderOutput">
+		<xs:choice>
+			<xs:element name="assign-trial-site" type="assignTrialSiteOutput"/>
+			<xs:element name="suspend-site" type="suspendSiteOutput"/>
+			<xs:element name="remove-site" type="removeSiteOutput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="assignTrialSiteInput">
+		<xs:sequence>
+			<xs:element name="pp-site-guid" type="string"/>
+			<xs:element name="sb-site-uuid" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="assignTrialSiteOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="suspendSiteInput">
+		<xs:sequence>
+			<xs:element name="sb-site-uuid" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="removeSiteInput">
+		<xs:sequence>
+			<xs:element name="sb-site-uuid" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="suspendSiteOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>	
+	</xs:complexType>
+	<xs:complexType name="removeSiteOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema>

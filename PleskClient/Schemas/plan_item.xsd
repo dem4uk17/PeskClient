@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="PlanItemInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="visible" type="boolean"/>
+						<xs:element name="label" type="text"/>
+						<xs:element name="tooltip" type="text"/>
+						<xs:element name="url" type="urlType" minOccurs="0"/>
+						<xs:element name="internal" type="boolean" minOccurs="0"/>
+						<xs:element name="noframe" type="boolean" minOccurs="0"/>
+						<xs:element name="url-components" type="PlanItemUrlComponentsType" minOccurs="0"/>
+						<xs:element name="image-file" type="string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="update">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="PlanItemFilterType"/>
+						<xs:element name="visible" type="boolean" minOccurs="0"/>
+						<xs:element name="label" type="text" minOccurs="0"/>
+						<xs:element name="tooltip" type="text" minOccurs="0"/>
+						<xs:element name="url" type="urlType" minOccurs="0"/>
+						<xs:element name="internal" type="boolean" minOccurs="0"/>
+						<xs:element name="noframe" type="boolean" minOccurs="0"/>
+						<xs:element name="url-components" type="PlanItemUrlComponentsType" minOccurs="0"/>
+						<xs:element name="image-file" type="string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="PlanItemFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="PlanItemFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="PlanItemOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="name"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="update">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="PlanItemResultType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="PlanItemResultType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="name"/>
+											<xs:sequence minOccurs="0">
+												<xs:element name="uuid" type="string"/>
+												<xs:element name="class" type="string"/>
+												<xs:element name="visible" type="boolean"/>
+												<xs:element name="applicable-to">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="subscription" type="boolean"/>
+															<xs:element name="site" type="boolean"/>
+															<xs:element name="email" type="boolean"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:sequence minOccurs="0">
+													<xs:element name="label" type="text"/>
+													<xs:element name="tooltip" type="text"/>
+													<xs:element name="url" type="urlType" minOccurs="0"/>
+													<xs:element name="internal" type="boolean" minOccurs="0"/>
+													<xs:element name="noframe" type="boolean" minOccurs="0"/>
+													<xs:element name="url-components" type="PlanItemUrlComponentsType" minOccurs="0"/>
+													<xs:element name="image-http-path" type="string" minOccurs="0"/>
+												</xs:sequence>
+											</xs:sequence>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="PlanItemFilterType">
+		<xs:choice>
+			<xs:element name="all"/>
+			<xs:element name="name" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="PlanItemUrlComponentsType">
+		<xs:all minOccurs="0">
+			<xs:element name="dom_id" type="boolean" minOccurs="0"/>
+			<xs:element name="dom_name" type="boolean" minOccurs="0"/>
+			<xs:element name="ftp_user" type="boolean" minOccurs="0"/>
+			<xs:element name="ftp_pass" type="boolean" minOccurs="0"/>
+			<xs:element name="cl_id" type="boolean" minOccurs="0"/>
+			<xs:element name="cname" type="boolean" minOccurs="0"/>
+			<xs:element name="pname" type="boolean" minOccurs="0"/>
+			<xs:element name="email" type="boolean" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="PlanItemResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:choice minOccurs="0">
+					<xs:element name="name" type="string"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

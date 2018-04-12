@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="DesktopInputPacketType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="set-admin" type="SetAdminInputCommandType"/>
+			<xs:element name="set-default-preset" type="SetDefaultPresetInputCommandType"/>
+			<xs:element name="preset-list" type="PresetListsInputCommandType"/>
+			<xs:element name="add-preset" type="AddPresetInputCommandType"/>
+			<xs:element name="remove-preset" type="RemovePresetInputCommandType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SetAdminInputCommandType">
+		<xs:sequence>
+			<xs:element name="desktop-preset" type="text">
+				<xs:annotation>
+					<xs:documentation>Desktop preset name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SetDefaultPresetInputCommandType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="name" type="string"/>
+				<xs:element name="id" type="id_type"/>
+			</xs:choice>
+			<xs:element name="type" type="DesktopPresetType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="DesktopPresetType">
+		<xs:restriction base="string">
+			<xs:enumeration value="admin"/>
+			<xs:enumeration value="reseller"/>
+			<xs:enumeration value="domain"/>			
+			<xs:enumeration value="client"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AddPresetInputCommandType">
+		<xs:sequence>
+			<xs:element name="file" type="string"/>
+			<xs:element name="overwrite" type="NoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RemovePresetInputCommandType">
+		<xs:sequence>
+			<xs:element name="filter" type="PresetFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DesktopOutputPacketType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="set-admin" type="SetAdminResult"/>
+			<xs:element name="set-default-preset" type="SetDefaultResult"/>
+			<xs:element name="preset-list" type="PresetListsResult"/>
+			<xs:element name="add-preset" type="AddPresetResult"/>
+			<xs:element name="remove-preset" type="RemovePresetResult"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="PresetFilterType">
+		<xs:choice minOccurs="0">
+			<xs:sequence>
+				<xs:element name="name" type="string"/>
+				<xs:element name="type" type="DesktopPresetType"/>
+			</xs:sequence>
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DesktopOpResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="id" type="id_type"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PresetListsInputCommandType">
+		<xs:sequence>
+			<xs:element name="filter" type="PresetSimpleFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PresetSimpleFilterType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PresetType">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="type"/>
+			<xs:element name="default" type="NoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DesktopOpAdvancedpresetType">
+		<xs:complexContent>
+			<xs:extension base="DesktopOpResultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="preset" type="PresetType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SetAdminResult">
+		<xs:sequence>
+			<xs:element name="result" type="DesktopOpResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SetDefaultResult">
+		<xs:sequence>
+			<xs:element name="result" type="DesktopOpResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddPresetResult">
+		<xs:sequence>
+			<xs:element name="result" type="DesktopOpResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RemovePresetResult">
+		<xs:sequence>
+			<xs:element name="result" type="DesktopOpResultType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PresetListsResult">
+		<xs:sequence>
+			<xs:element name="result" type="DesktopOpAdvancedpresetType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

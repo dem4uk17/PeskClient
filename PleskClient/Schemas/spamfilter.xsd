@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2017. Parallels IP Holdings GmbH. All Rights Reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="SpamassassinFilterType">
+		<xs:choice>
+			<xs:element name="username" type="string" maxOccurs="unbounded"/>
+			<xs:element name="spamfilter-id" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SpamassassinPreferencesType">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Admin's settings</xs:documentation>
+				</xs:annotation>
+				<xs:element name="personal" type="boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Allow per-user preferences</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="max-children-process" type="int" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The maximum number of worker spamd processes to run</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Common settings</xs:documentation>
+				</xs:annotation>
+				<xs:element name="use-server-wide-settings" type="boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Use server-wide settings</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="required-score" type="xs:anySimpleType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The score that a message must receive to qualify as spam</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="rewrite-header" type="string" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:annotation>
+					<xs:documentation>Personal settings</xs:documentation>
+				</xs:annotation>
+				<xs:element name="action" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="string">
+							<xs:enumeration value="text"/>
+							<xs:enumeration value="delete"/>
+							<xs:enumeration value="move"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SpamAction">
+		<xs:restriction base="string"/>
+	</xs:simpleType>
+	<xs:complexType name="SpamPatternFilterType">
+		<xs:choice>
+			<xs:element name="pattern" type="string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add-pattern" type="SpamFilterAddPatternInputType">
+				<xs:annotation>
+					<xs:documentation>Add pattern to list</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="del-pattern" type="SpamFilterDelPatternInputType">
+				<xs:annotation>
+					<xs:documentation>Delete pattern from list</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="get-patterns" type="SpamFilterGetPatternsInputType"/>
+			<xs:element name="get" type="SpamFilterGetInputType"/>
+			<xs:element name="set" type="SpamFilterSetInputType"/>
+			<xs:element name="get-allowed-preferences" type="SpamFilterGetAllowedPreferencesInputType"/>
+			<xs:element name="get-allowed-lists" type="SpamFilterGetAllowedListsInputType"/>
+			<xs:element name="check" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:simpleType name="SpamListType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="black"/>
+			<xs:enumeration value="unblack"/>
+			<xs:enumeration value="white"/>
+			<xs:enumeration value="unwhite"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="SpamFilterAddPatternInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="SpamPatternFilterType"/>
+			<xs:element name="list" type="SpamListType"/>
+			<xs:choice>
+				<xs:element name="username" type="string"/>
+				<xs:element name="spamfilter-id" type="id_type"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterDelPatternInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="SpamPatternFilterType"/>
+			<xs:element name="list" type="SpamListType"/>
+			<xs:choice>
+				<xs:element name="username" type="string"/>
+				<xs:element name="spamfilter-id" type="id_type"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterSetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="SpamassassinFilterType"/>
+			<xs:element name="preferences" type="SpamassassinPreferencesType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="enabled" type="NoneType"/>
+				<xs:element name="disabled" type="NoneType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterGetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="SpamassassinFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterGetPatternsInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="SpamassassinFilterType" minOccurs="0"/>
+			<xs:element name="list" type="SpamListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterGetAllowedPreferencesInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="SpamassassinFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterGetAllowedListsInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="SpamassassinFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add-pattern" type="SpamFilterAddPatternOutputType"/>
+			<xs:element name="del-pattern" type="SpamFilterDelPatternOutputType"/>
+			<xs:element name="get-patterns" type="SpamFilterGetPatternsOutputType"/>
+			<xs:element name="get" type="SpamFilterGetOutputType"/>
+			<xs:element name="set" type="SpamFilterSetOutputType"/>
+			<xs:element name="get-allowed-preferences" type="SpamFilterGetAllowedPreferencesOutputType"/>
+			<xs:element name="get-allowed-lists" type="SpamFilterGetAllowedListsOutputType"/>
+			<xs:element name="check" type="SpamFilterCheckOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterAddPatternOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterDelPatternOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterGetPatternsOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence>
+								<xs:element name="pattern" type="string" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterGetOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="username" type="string"/>
+								<xs:choice>
+									<xs:element name="enabled" type="NoneType"/>
+									<xs:element name="disabled" type="NoneType"/>
+								</xs:choice>
+								<xs:element name="preferences" type="SpamassassinPreferencesType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterSetOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterGetAllowedPreferencesOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="preference" type="string" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterGetAllowedListsOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="list" type="SpamListType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpamFilterCheckOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
